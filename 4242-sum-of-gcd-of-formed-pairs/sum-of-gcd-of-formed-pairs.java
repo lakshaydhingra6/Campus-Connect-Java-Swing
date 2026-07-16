@@ -1,19 +1,21 @@
 class Solution {
-    private int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
-
-    public long gcdSum(int[] A) {
-        int max = 0;
-        for (int i = 0; i < A.length; i++) {
-            max = Math.max(max, A[i]);
-            A[i] = gcd(A[i], max);
+    Map<String,Integer> dp=new HashMap<>();
+    public long gcdSum(int[] nums) {
+        int max=nums[0];
+        for(int i=1;i<nums.length;i++) {
+            max=Math.max(max,nums[i]);
+            nums[i]=gcd(max,nums[i]);
         }
+        Arrays.sort(nums);
+        long sum=0;
+        int l=0,r=nums.length-1;
+        while(l<r) {
+            sum+=gcd(nums[l++],nums[r--]);
+        }
+        return sum;
+    }
 
-        Arrays.sort(A);
-
-        long res = 0;        
-        for (int i = 0, j = A.length - 1; i < j; i++, j--)
-            res += gcd(A[i], A[j]);
-
-        return res;
+    int gcd(int b, int s) {
+        return b%s==0?s:gcd(s,b%s);
     }
 }
